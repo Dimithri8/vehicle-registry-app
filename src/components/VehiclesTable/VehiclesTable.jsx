@@ -1,4 +1,3 @@
-import { use, useState } from "react";
 import {
   Table,
   TableContainer,
@@ -9,51 +8,10 @@ import {
   Button,
 } from "@mui/material";
 
-export default function VehiclesTable() {
-  const registeredVehicles = [
-    {
-      licensePlate: "ABC-1234",
-      ownerName: "John Doe",
-      make: "Toyota",
-      model: "Corolla",
-      status: "Active",
-    },
-    {
-      licensePlate: "XYZ-5678",
-      ownerName: "Jane Smith",
-      make: "Honda",
-      model: "Civic",
-      status: "Inactive",
-    },
-    {
-      licensePlate: "LMN-9012",
-      ownerName: "Robert Brown",
-      make: "Ford",
-      model: "Mustang",
-      status: "Active",
-    },
-    {
-      licensePlate: "PQR-3456",
-      ownerName: "Emily Davis",
-      make: "Chevrolet",
-      model: "Camaro",
-      status: "Pending",
-    },
-    {
-      licensePlate: "TUV-7890",
-      ownerName: "Michael Wilson",
-      make: "Nissan",
-      model: "Altima",
-      status: "Active",
-    },
-  ];
-  const [allRegVehicles, setAllRegVehicles] = useState(registeredVehicles);
-
-  function handleDelete(vehicle) {
+export default function VehiclesTable({ vehicles }) {
+  function handleDelete(v) {
     setAllRegVehicles(
-      allRegVehicles.filter(
-        (item) => item.licensePlate !== vehicle.licensePlate
-      )
+      allRegVehicles.filter((item) => item.licensePlate !== v.licensePlate)
     );
   }
 
@@ -71,7 +29,7 @@ export default function VehiclesTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {allRegVehicles.map((vehicle, index) => (
+          {vehicles.map((vehicle, index) => (
             <TableRow key={index}>
               <TableCell>{vehicle.licensePlate}</TableCell>
               <TableCell>{vehicle.ownerName}</TableCell>
