@@ -20,8 +20,19 @@ export default function VehiclesList() {
   function addNewVehicle(e) {
     e.preventDefault();
     setAllVehicles((prevValue) => [...prevValue, newVehicle]);
-    setNewVehicle("");
+    setNewVehicle({
+      licensePlate: "",
+      ownerName: "",
+      make: "",
+      model: "",
+      status: "Active",
+    });
     setIsOpen(false);
+  }
+  function handleDelete(vehicle) {
+    setAllVehicles((prevItem) =>
+      prevItem.filter((item) => item.licensePlate !== vehicle.licensePlate)
+    );
   }
   function handleOpenForm() {
     setIsOpen(true);
@@ -40,7 +51,7 @@ export default function VehiclesList() {
         newVehicle={newVehicle}
         handleSubmit={addNewVehicle}
       />
-      <VehiclesTable vehicles={allVehicles} />
+      <VehiclesTable vehicles={allVehicles} handleDelete={handleDelete} />
     </>
   );
 }
