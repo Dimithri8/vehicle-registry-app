@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { Typography, TextField, Button } from "@mui/material";
-export default function Header({ handleSubmit }) {
+export default function Header({ handleSearch, handleOpenForm }) {
   return (
     <Box>
       <Typography variant="h1" sx={{ fontSize: 24, fontWeight: 600 }}>
@@ -17,7 +17,7 @@ export default function Header({ handleSubmit }) {
       >
         <Box
           component={"form"}
-          onSubmit={handleSubmit}
+          onSubmit={handleSearch}
           sx={{ display: "flex", gap: 1, mt: 2 }}
         >
           <TextField
@@ -33,6 +33,7 @@ export default function Header({ handleSubmit }) {
           type={"button"}
           variant={"contained"}
           sx={{ padding: 2 }}
+          onClick={handleOpenForm}
         >
           Add Vehicle
         </Button>
