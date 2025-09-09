@@ -1,3 +1,4 @@
+import { use, useState } from "react";
 import {
   Table,
   TableContainer,
@@ -46,6 +47,15 @@ export default function VehiclesTable() {
       status: "Active",
     },
   ];
+  const [allRegVehicles, setAllRegVehicles] = useState(registeredVehicles);
+
+  function handleDelete(vehicle) {
+    setAllRegVehicles(
+      allRegVehicles.filter(
+        (item) => item.licensePlate !== vehicle.licensePlate
+      )
+    );
+  }
 
   return (
     <TableContainer sx={{ mt: 2 }}>
@@ -61,7 +71,7 @@ export default function VehiclesTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {registeredVehicles.map((vehicle, index) => (
+          {allRegVehicles.map((vehicle, index) => (
             <TableRow key={index}>
               <TableCell>{vehicle.licensePlate}</TableCell>
               <TableCell>{vehicle.ownerName}</TableCell>
@@ -72,7 +82,12 @@ export default function VehiclesTable() {
                 <Button type="button" variant="outlined">
                   Edit
                 </Button>
-                <Button type="button" variant="outlined" color={"error"}>
+                <Button
+                  onClick={() => handleDelete(vehicle)}
+                  type="button"
+                  variant="outlined"
+                  color={"error"}
+                >
                   Delete
                 </Button>
               </TableCell>
