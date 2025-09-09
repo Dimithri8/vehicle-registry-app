@@ -8,13 +8,7 @@ import {
   Button,
 } from "@mui/material";
 
-export default function VehiclesTable({ vehicles }) {
-  function handleDelete(v) {
-    setAllRegVehicles(
-      allRegVehicles.filter((item) => item.licensePlate !== v.licensePlate)
-    );
-  }
-
+export default function VehiclesTable({ vehicles, handleDelete }) {
   return (
     <TableContainer sx={{ mt: 2 }}>
       <Table>
