@@ -19,6 +19,8 @@ export default function VehicleForm({
   handleSubmit,
   newVehicle,
   handleChange,
+  formTitle,
+  buttonLabel,
 }) {
   const selectItems = [
     { value: "Active", label: "Active" },
@@ -27,7 +29,7 @@ export default function VehicleForm({
   ];
   return (
     <Dialog open={isOpen}>
-      <DialogTitle>Add Vehicle</DialogTitle>
+      <DialogTitle>{formTitle} Vehicle</DialogTitle>
       <DialogContent>
         <Box
           id="vehicle-form"
@@ -94,7 +96,7 @@ export default function VehicleForm({
           Cancel
         </Button>
         <Button form="vehicle-form" type="submit" variant="contained">
-          Add Vehicle
+          {buttonLabel}
         </Button>
       </DialogActions>
     </Dialog>
