@@ -8,7 +8,7 @@ import {
   Button,
 } from "@mui/material";
 
-export default function VehiclesTable({ vehicles, handleDelete }) {
+export default function VehiclesTable({ vehicles, handleDelete, handleEdit }) {
   return (
     <TableContainer sx={{ mt: 2 }}>
       <Table>
@@ -31,7 +31,11 @@ export default function VehiclesTable({ vehicles, handleDelete }) {
               <TableCell>{vehicle.model}</TableCell>
               <TableCell>{vehicle.status}</TableCell>
               <TableCell sx={{ display: "flex", gap: 1 }}>
-                <Button type="button" variant="outlined">
+                <Button
+                  type="button"
+                  variant="outlined"
+                  onClick={() => handleEdit(vehicle)}
+                >
                   Edit
                 </Button>
                 <Button
