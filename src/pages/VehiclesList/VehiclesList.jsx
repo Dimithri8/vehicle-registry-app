@@ -12,6 +12,7 @@ export default function VehiclesList() {
     status: "Active",
   });
   const [allVehicles, setAllVehicles] = useState([]);
+  const [isEditing, setIsEditing] = useState(false);
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -29,13 +30,35 @@ export default function VehiclesList() {
     });
     setIsOpen(false);
   }
+  function handleUpdate(e) {
+    e.preventDefault();
+    setAllVehicles((prevVehicles) =>
+      prevVehicles.map((item) =>
+        item.licensePlate === newVehicle.licensePlate ? { ...newVehicle } : item
+      )
+    );
+    setIsOpen(false);
+  }
   function handleDelete(vehicle) {
     setAllVehicles((prevItem) =>
       prevItem.filter((item) => item.licensePlate !== vehicle.licensePlate)
     );
   }
+  function handleEdit(vehicle) {
+    setIsOpen(true);
+    setIsEditing(true);
+    setNewVehicle(vehicle);
+  }
   function handleOpenForm() {
     setIsOpen(true);
+    setIsEditing(false);
+    setNewVehicle({
+      licensePlate: "",
+      ownerName: "",
+      make: "",
+      model: "",
+      status: "Active",
+    });
   }
   function handleCloseForm() {
     setIsOpen(false);
@@ -49,9 +72,15 @@ export default function VehiclesList() {
         handleCloseForm={handleCloseForm}
         handleChange={handleChange}
         newVehicle={newVehicle}
-        handleSubmit={addNewVehicle}
+        handleSubmit={isEditing ? handleUpdate : addNewVehicle}
+        formTitle={isEditing ? "Edit" : "Add"}
+        buttonLabel={isEditing ? "Save Changes" : "Add Vehicle"}
       />
-      <VehiclesTable vehicles={allVehicles} handleDelete={handleDelete} />
+      <VehiclesTable
+        vehicles={allVehicles}
+        handleDelete={handleDelete}
+        handleEdit={handleEdit}
+      />
     </>
   );
 }
