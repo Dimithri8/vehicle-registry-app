@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "../../components/Header/Header";
 import VehiclesTable from "../../components/VehiclesTable/VehiclesTable";
 import VehicleForm from "../../components/VehicleForm/VehicleForm";
@@ -18,9 +18,19 @@ export default function VehiclesList() {
     const { name, value } = event.target;
     setNewVehicle((prevValue) => ({ ...prevValue, [name]: value }));
   }
-  function addNewVehicle(e) {
+
+  async function addNewVehicle(e) {
     e.preventDefault();
-    setAllVehicles((prevValue) => [...prevValue, newVehicle]);
+
+    const response = await fetch(`http://localhost:3000/vehicles`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newVehicle),
+    });
+    const data = await response.json();
+    setAllVehicles((prevValue) => [...prevValue, data.vehicle]);
     setNewVehicle({
       licensePlate: "",
       ownerName: "",
@@ -30,16 +40,45 @@ export default function VehiclesList() {
     });
     setIsOpen(false);
   }
-  function handleUpdate(e) {
+
+  useEffect(() => {
+    async function getAllVehicles() {
+      const response = await fetch(`http://localhost:3000/vehicles`);
+      const result = await response.json();
+      setAllVehicles(result.vehicles);
+    }
+    getAllVehicles();
+  }, []);
+
+  async function handleUpdate(e) {
     e.preventDefault();
+    const response = await fetch(
+      `http://localhost:3000/vehicles/${newVehicle.licensePlate}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newVehicle),
+      }
+    );
+    const data = await response.json();
+
     setAllVehicles((prevVehicles) =>
       prevVehicles.map((item) =>
-        item.licensePlate === newVehicle.licensePlate ? { ...newVehicle } : item
+        item.licensePlate === newVehicle.licensePlate
+          ? { ...data.updatedVehicle }
+          : item
       )
     );
     setIsOpen(false);
   }
-  function handleDelete(vehicle) {
+
+  async function handleDelete(vehicle) {
+    await fetch(`http://localhost:3000/vehicles/${vehicle.licensePlate}`, {
+      method: "DELETE",
+    });
+
     setAllVehicles((prevItem) =>
       prevItem.filter((item) => item.licensePlate !== vehicle.licensePlate)
     );
